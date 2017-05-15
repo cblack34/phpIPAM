@@ -1,7 +1,4 @@
 #! /usr/bin/env python
-__author__ = 'michaelluich'
-author_email = 'mluich@stonesrose.com',
-
 import json
 import inspect
 import logging
@@ -14,6 +11,8 @@ from requests.packages.urllib3 import exceptions
 disable_warnings(exceptions.InsecureRequestWarning)
 logger = logging.getLogger(__name__)
 
+__author__ = 'michaelluich'
+author_email = 'mluich@stonesrose.com',
 
 class phpIPAM:
     """An interface to phpIPAM web API."""
@@ -36,6 +35,7 @@ class phpIPAM:
         self.appbase = "{}/api/{}".format(self.server, self.app_id)
         self.ssl_verify = ssl_verify
         self.token = None
+        self.token_expires = None
         if debug:
             self.enable_debug()
         self.login()
@@ -59,7 +59,7 @@ class phpIPAM:
         headers = {}
         if self.token:
             headers['token'] = self.token
-        if data != None:
+        if data:
             if type(data) != str:
                 data = json.dumps(data)
             headers['Content-Type'] = 'application/json'
@@ -76,7 +76,7 @@ class phpIPAM:
         response = json.loads(p.text)
         callingfct = inspect.getouterframes(inspect.currentframe(), 2)[1][3]
 
-        if not p.status_code in (200, 201):
+        if p.status_code not in (200, 201):
             logging.error("phpipam.{}: Failure {}".format(callingfct, p.status_code))
             logging.error(response)
             self.error = p.status_code
@@ -107,7 +107,7 @@ class phpIPAM:
         """"check if a ticket is still valid"""
         try:
             return self.__query("/user/")
-        except:
+        except Exception:
             return self.login()
 
     def ticket_extend(self):
@@ -120,9 +120,9 @@ class phpIPAM:
         """Check the authorization of a controller and get a list of methods"""
         return self.__query("/{}/".format(controller))['methods']
 
-    ### Controllers
+    # Controllers
 
-    ## Sections
+    # Sections
 
     def sections_get_all(self):
         """Get a list of all sections"""
@@ -152,14 +152,15 @@ class phpIPAM:
          """
         return self.__query("/sections/{}/subnets/?links=false".format(section_id))
 
-    def sections_create(self, section_id, masterSection=0):
+    def sections_create(self, section_id, master_section=0):
         """Create a section
 
          Parameters:
              section_id = section name.
          """
         data = {'name': section_id}
-        if masterSection != 0: data['masterSection'] = masterSection
+        if master_section != 0:
+            data['masterSection'] = master_section
         return self.__query("/sections/", data=data)
 
     def sections_delete(self, section_id, ):
@@ -170,8 +171,7 @@ class phpIPAM:
         """
         return self.__query("/sections/{}/".format(section_id), method=delete)
 
-    ## Subnet
-
+    # Subnet
     def subnet_get(self, subnet_id):
         """Get Information about a specific subnet
 
@@ -204,13 +204,13 @@ class phpIPAM:
         """
         return self.__query("/subnets/{}/first_free/?links=false".format(subnet_id))
 
-    def subnet_create(self, subnet, mask, sectionId, description="", vlanid=None, mastersubnetid=0, nameserverid=None):
+    def subnet_create(self, subnet, mask, section_id, description="", vlanid=None, mastersubnetid=0, nameserverid=None):
         """Create new subnet
 
         Parameters:
         subnet: The subnet
         mask: the subnet mask
-        sectionId
+        section_id
         description: description
         vlanid:
         mastersubnetid:
@@ -218,7 +218,7 @@ class phpIPAM:
         data = {
             'subnet': subnet,
             'mask': mask,
-            "sectionId": sectionId,
+            "sectionId": section_id,
             'description': description,
             'vlanId': vlanid,
             'masterSubnetId': mastersubnetid,
@@ -234,8 +234,7 @@ class phpIPAM:
         """
         return self.__query("/subnets/{}/".format(subnet_id), method=delete)
 
-    ## Address
-
+    # Address
     def address_get(self, address_id):
         """Get Information about a specific address
 
@@ -283,8 +282,7 @@ class phpIPAM:
         }
         return self.__query("/addresses/", data=data)
 
-    ## VLAN
-
+    # VLAN
     def vlan_get(self, vlan_id):
         """Get Information about a specific vlan
 
