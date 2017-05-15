@@ -15,7 +15,7 @@ disable_warnings(exceptions.InsecureRequestWarning)
 logger = logging.getLogger(__name__)
 
 
-class PhpIPAM:
+class phpIPAM:
     """An interface to phpIPAM web API."""
 
     def __init__(self, server, app_id, username, password, ssl_verify=False, debug=False):
