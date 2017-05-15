@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 __author__ = 'michaelluich'
 author_email = 'mluich@stonesrose.com',
 
+
 class phpIPAM:
     """An interface to phpIPAM web API."""
 
