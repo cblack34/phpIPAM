@@ -81,7 +81,10 @@ class phpIPAM(object):
             raise requests.exceptions.HTTPError(response=response)
 
         logging.info("phpipam.%s: success %s" % (callingfct, response['success']))
-        return response['data']
+        if 'data' in response:
+            return response['data']
+        else:
+            return response
 
 
     # Authentication
@@ -277,6 +280,11 @@ class phpIPAM(object):
 
     ## VLAN
 
+    def vlan_get_all(self):
+        """Get all vlans
+        """
+        return self.__query("/vlans/?links=false")
+
     def vlan_get(self, vlan_id):
         """Get Information about a specific vlan
 
@@ -317,13 +325,13 @@ class phpIPAM(object):
         }
         return self.__query("/vlans/", data=data)
 
-    def vlan_delete(self, vlan_id, ):
+    def vlan_delete(self, vlan_id):
         """Delete a vlan
 
         Parameters:
         vlan_id = vlan name or id.
         """
-        return self.__query("/vlans/%s/" % (vlan_id))
+        return self.__query("/vlans/%s/" % (vlan_id), method=requests.delete)
 
     ## Devices
 
@@ -396,4 +404,4 @@ class phpIPAM(object):
         Parameters:
         device_id: the id of the device
         """
-        return self.__query("/devices/%s/?links=false" % (device_id), method=requests.delete)
+        return self.__query("/devices/%s/" % (device_id), method=requests.delete)
