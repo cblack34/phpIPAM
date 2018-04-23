@@ -324,3 +324,76 @@ class phpIPAM(object):
         vlan_id = vlan name or id.
         """
         return self.__query("/vlans/%s/" % (vlan_id))
+
+    ## Devices
+
+    def devices_get_all(self):
+        """Get a list of all devices
+        """
+        return self.__query("/devices/?links=false")
+
+    def devices_get(self, device_id):
+        """Get Information about a specific device
+
+        Parameters:
+        device_id: The device identifier
+        """
+        return self.__query("/devices/%s/?links=false" % (device_id))
+
+    def devices_get_subnets(self, device_id):
+        """Get all subnets within device
+
+        Parameters:
+        device_id: The device identifier
+        """
+        return self.__query("/devices/%s/subnets/?links=false" % (device_id))
+
+    def devices_get_addresses(self, device_id):
+        """Get all addresses within device
+
+        Parameters:
+        device_id: The device identifier
+        """
+        return self.__query("/devices/%s/addresses/?links=false" % (device_id))
+
+    def devices_search(self, search_string):
+        """Get all devices with provided string anywhere in any field
+
+        Parameters:
+        search_string: The string to search for
+        """
+        return self.__query("/devices/search/%s/?links=false" % (search_string))
+
+    def devices_create(self, hostname, sections=None, location=None, ip_addr=None, rack=None,
+            rack_start=None, rack_size=None):
+        """Create new device
+
+        Parameters:
+        hostname: the name of the device
+        description: description of the device
+        sections: string of section IDs, in numeric ID form, separated by semicolon
+        location: location where the device exists, in numeric ID form
+        ip_addr: IP address of the device
+        rack: rack where the device exists, in numeric ID form
+        rack_start: location of the device in the specified rack
+        rack_size: size of the device, in rack U
+        """
+        data = {
+            "hostname":hostname,
+            "description":description,
+            "sections":sections,
+            "location":location,
+            "ip_addr":ip_addr,
+            "rack":rack,
+            "rack_start":rack_start,
+            "rack_size":rack_size
+        }
+        return self.__query("/devices/?links=false", data=data)
+
+    def devices_delete(self, device_id):
+        """Delete a device
+
+        Parameters:
+        device_id: the id of the device
+        """
+        return self.__query("/devices/%s/?links=false" % (device_id), method=requests.delete)
