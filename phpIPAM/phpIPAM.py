@@ -302,9 +302,17 @@ class phpIPAM(object):
         """Get Information about a specific address
 
         Parameters:
-        address_id: The address identifier either the ID or cidr
+        address_id: The address identifier
         """
         return self.__query("/addresses/%s/?links=false" % (address_id))
+
+    def address_get_ping(self, address_id):
+        """Get ping status of specific address
+
+        Parameters:
+        address_id: The address identifier
+        """
+        return self.__query("/addresses/%s/ping/?links=false" % (address_id))
 
     def address_search(self, address):
         """Search for a specific address
@@ -313,6 +321,48 @@ class phpIPAM(object):
         address: The address identifier either the ID or address
         """
         return self.__query("/addresses/search/%s/?links=false" % (address))
+
+    def address_search_hostname(self, hostname):
+        """Search for all IPs with specified hostname
+
+        Parameters:
+        hostname: the hostname to search for
+        """
+        return self.__query("/addresses/search_hostname/%s/?links=false" % (hostname))
+
+    def address_first_free(self, subnet_id):
+        """Get first free IP address in subnet
+
+        Parameters:
+        subnet_id: The subnet identifier
+        """
+        return self.__query("/addresses/first_free/%s/?links=false" % (subnet_id))
+    
+    def address_get_custom_fields(self):
+        """Get all address custom fields
+        """
+        return self.__query("/addresses/custom_fields/?links=false")
+
+    def address_get_tag_all(self):
+        """Get all address tags
+        """
+        return self.__query("/addresses/tags/?links=false")
+
+    def address_get_tag(self, tag_id):
+        """Get specific address tag
+
+        Parameters:
+        tag_id: the tag identifier
+        """
+        return self.__query("/addresses/tags/%s/?links=false" % (tag_id))
+
+    def address_get_tag_addresses(self, tag_id):
+        """Get addresses for specific tag
+
+        Parameters:
+        tag_id: the tag identifier
+        """
+        return self.__query("/addresses/tags/%s/addresses/?links=false" % (tag_id))
 
     def address_update(self, ip, hostname=None, description=None, is_gateway=None, mac=None):
         """Update address informations"""
@@ -341,6 +391,23 @@ class phpIPAM(object):
         }
         return self.__query("/addresses/", data=data)
 
+    def address_delete(self, address_id):
+        """Delete an address
+
+        Parameters:
+        address_id: the address identifier
+        """
+        return self.__query("/addresses/%s/" % (address_id), method=requests.delete)
+
+    def address_delete_by_ip(self, ip_addr, subnet_id):
+        """Delete an address in specific subnet
+
+        Parameters:
+        ip_addr: IP address in dotted decimal format
+        subnet_id: the subnet identifier
+        """
+        return self.__query("/addresses/%s/%s/" % (ip_addr, subnet_id), method=requests.delete)
+
     ## VLAN
 
     def vlan_get_all(self):
@@ -356,6 +423,7 @@ class phpIPAM(object):
         """
         return self.__query("/vlans/%s/?links=false" % (vlan_id))
 
+    '''
     def vlan_get_id(self, vlan_id):
         """vlan_get_id
         search for the ID of a vlan.
@@ -364,6 +432,16 @@ class phpIPAM(object):
         vlan: The vlan to search for
         """
         return self.__query("/vlans/search/%s/?links=false" % (vlan_id))[0]['id']
+    '''
+
+    def vlan_search(self, vlan_id):
+        """vlan_get_id
+        search for the ID of a vlan.
+
+        Parameters:
+        vlan: The vlan to search for
+        """
+        return self.__query("/vlans/search/%s/?links=false" % (vlan_id))
 
     def vlan_subnets(self, vlan_id):
         """Get vlan subnets
@@ -372,6 +450,20 @@ class phpIPAM(object):
         vlan_id: The vlan identifier
         """
         return self.__query("/vlans/%s/subnets/?links=false" % (vlan_id))
+
+    def vlan_custom_fields(self):
+        """Get all vlan custom fields
+        """
+        return self.__query("/vlans/custom_fields/?links=false")
+
+    def vlan_subnets_section(self, vlan_id, section_id):
+        """Get vlan subnets in specific section
+
+        Parameters:
+        vlan_id: The vlan identifier
+        section_id: The section identifier
+        """
+        return self.__query("/vlans/%s/subnets/%s/?links=false" % (vlan_id, section_id))
 
     def vlan_create(self, number, name, description=""):
         """Create new vlan
