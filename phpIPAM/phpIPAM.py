@@ -174,17 +174,33 @@ class phpIPAM(object):
         """Get Information about a specific subnet
 
         Parameters:
-        subnet_id: The subnet identifier either the ID or cidr
+        subnet_id: The subnet identifier
         """
         return self.__query("/subnets/%s/?links=false" % (subnet_id))
 
-    def subnet_search(self, subnet_id):
-        """Search by cidr
+    def subnet_get_usage(self, subnet_id):
+        """Get subnet usage
 
         Parameters:
-        subnet_id: The subnet cidr
+        subnet_id: The subnet identifier
         """
-        return self.__query("/subnets/cidr/%s/?links=false" % (subnet_id))
+        return self.__query("/subnets/%s/usage/?links=false" % (subnet_id))
+
+    def subnet_get_first_free(self, subnet_id):
+        """Get first free IP address in subnet
+
+        Parameters:
+        subnet_id: The subnet identifier
+        """
+        return self.__query("/subnets/%s/first_free/?links=false" % (subnet_id))
+
+    def subnet_get_slaves(self, subnet_id):
+        """Get all immediate slave subnets
+
+        Parameters:
+        subnet_id: The subnet identifier
+        """
+        return self.__query("/subnets/%s/slaves/?links=false" % (subnet_id))
 
     def subnet_all(self, subnet_id):
         """Get all addresses in a subnet
@@ -194,14 +210,45 @@ class phpIPAM(object):
         """
         return self.__query("/subnets/%s/addresses/?links=false" % (subnet_id))
 
-    def subnet_first_available(self, subnet_id):
-        """Get first available
+    def subnet_get_ip(self, subnet_id, ip_addr):
+        """Get IP address from subnet
 
         Parameters:
-        subnet_id: The subnet id
+        subnet_id: The subnet identifier
+        ip_addr: IP address in dotted decimal format
         """
-        return self.__query("/subnets/%s/first_free/?links=false" % (subnet_id))
+        return self.__query("/subnets/%s/addresses/%s/?links=false" % (subnet_id, ip_addr))
 
+    def subnet_get_available_subnet(self, subnet_id, netmask):
+        """Get first available subnet with specified netmask
+
+        Parameters:
+        subnet_id: The subnet identifier of the parent subnet
+        netmask: desired subnet size
+        """
+        return self.__query("/subnets/%s/first_subnet/%s/?links=false" % (subnet_id, netmask))
+
+    def subnet_get_available_subnet_all(self, subnet_id, netmask):
+        """Get all available subnets with specified netmask
+
+        Parameters:
+        subnet_id: The subnet identifier of the parent subnet
+        netmask: desired subnet size
+        """
+        return self.__query("/subnets/%s/all_subnets/%s/?links=false" % (subnet_id, netmask))
+
+    def subnet_get_custom_fields(self):
+        """Get all subnet custom fields
+        """
+        return self.__query("/subnets/custom_fields/?links=false")
+
+    def subnet_search(self, subnet_id):
+        """Search by cidr
+
+        Parameters:
+        subnet_id: The subnet cidr
+        """
+        return self.__query("/subnets/cidr/%s/?links=false" % (subnet_id))
 
     def subnet_create(self, subnet, mask, sectionId, description="", vlanid=None, mastersubnetid=0, nameserverid=None):
         """Create new subnet
@@ -224,6 +271,22 @@ class phpIPAM(object):
             'nameserverId' : nameserverid
         }
         return self.__query("/subnets/", data=data)
+
+    def subnet_create_child(self, mask, description="", vlanid=None, mastersubnetid=0, nameserverid=None):
+        """Create new subnet of specific size as the first available in specified master subnet
+
+        Parameters:
+        mask: the subnet mask
+        description: description
+        vlanid:
+        mastersubnetid:
+        nameserverid:"""
+        data={
+            'description' : description,
+            'vlanId' : vlanid,
+            'nameserverId' : nameserverid
+        }
+        return self.__query("/subnets/%s/first_subnet/%s/" % (mastersubnetid, mask), data=data)
 
     def subnet_delete(self, subnet_id, ):
         """Delete a subnet
