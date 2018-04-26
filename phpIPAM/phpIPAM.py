@@ -488,6 +488,55 @@ class phpIPAM(object):
         """
         return self.__query("/vlans/%s/" % (vlan_id), method=requests.delete)
 
+    ## L2 Domains
+
+    def l2domains_get_all(self):
+        """Get all l2domains
+        """
+        return self.__query("/l2domains/")
+
+    def l2domains_get(self, l2domain_id):
+        """Get a specific l2domain
+
+        Parameters:
+        l2domain_id: the l2domain identifier
+        """
+        return self.__query("/l2domains/%s/?links=false" % (l2domain_id))
+
+    def l2domains_get_vlans(self, l2domain_id):
+        """Get vlans for a specific l2domain
+
+        Parameters:
+        l2domain_id: the l2domain identifier
+        """
+        return self.__query("/l2domains/%s/vlans/?links=false" % (l2domain_id))
+
+    def l2domains_get_custom_fields(self):
+        """Get all l2domain custom fields
+        """
+        return self.__query("/l2domains/custom_fields/?links=false")
+
+    def l2domains_create(self, name, description=None):
+        """Create an l2domain
+
+        Parameters:
+        name: the name of the l2domain
+        description: description of the l2domain
+        """
+        data = {
+            "name":name,
+            "description":description
+        }
+        return self.__query("/l2domains/?links=false", data=data)
+
+    def l2domains_delete(self, l2domain_id):
+        """Delete an l2domain
+
+        Parameters:
+        l2domain_id: the l2domain identifier
+        """
+        return self.__query("/l2domains/%s/" % (l2domain_id), method=requests.delete)
+
     ## Devices
 
     def devices_get_all(self):
