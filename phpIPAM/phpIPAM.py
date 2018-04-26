@@ -537,6 +537,59 @@ class phpIPAM(object):
         """
         return self.__query("/l2domains/%s/" % (l2domain_id), method=requests.delete)
 
+    ## VRF
+
+    def vrf_get_all(self):
+        """Get all vrfs
+        """
+        return self.__query("/vrf/")
+
+    def vrf_get(self, vrf_id):
+        """Get a specific vrf
+
+        Parameters:
+        vrf_id: the vrf identifier
+        """
+        return self.__query("/vrf/%s/" % (vrf_id))
+
+    def vrf_get_subnets(self, vrf_id):
+        """Get subnets for a specific vrf
+
+        Parameters:
+        vrf_id: the vrf identifier
+        """
+        return self.__query("/vrf/%s/subnets/?links=false" % (vrf_id))
+
+    def vrf_get_custom_fields(self):
+        """Get all vrf custom fields
+        """
+        return self.__query("/vrf/custom_fields/?links=false")
+
+    def vrf_create(self, name, description=None,rd=None,sections=None):
+        """Create a vrf
+
+        Parameters:
+        name: the name of the vrf
+        description: description of the vrf
+        rd: vrf route distinguisher
+        sections: sections in which to display vrf, blank shows in all
+        """
+        data = {
+            "name":name,
+            "description":description,
+            "rd":rd,
+            "sections":sections
+        }
+        return self.__query("/vrf/", data=data)
+
+    def vrf_delete(self, vrf_id):
+        """Delete a vrf
+
+        Parameters:
+        vrf_id: the vrf identifier
+        """
+        return self.__query("/vrfs/%s/" % (vrf_id), method=requests.delete)
+
     ## Devices
 
     def devices_get_all(self):
