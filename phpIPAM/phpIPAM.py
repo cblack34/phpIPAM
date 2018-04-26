@@ -124,7 +124,7 @@ class phpIPAM(object):
 
     def sections_get_all(self):
         "Get a list of all sections"
-        return self.__query("/sections/?links=false")
+        return self.__query("/sections/")
 
     def sections_get_id(self, section):
         """Get the ID of a section
@@ -132,7 +132,7 @@ class phpIPAM(object):
         Parameters:
             section: The name of the section you are looking for
         """
-        return self.__query("/sections/%s/?links=false" % (section))['id']
+        return self.__query("/sections/%s/" % (section))['id']
 
     def sections_get(self, section_id):
         """Get the details for a specific section
@@ -140,7 +140,7 @@ class phpIPAM(object):
         Parameters:
             section_id = section identifier. Can be the id number or name.
         """
-        return self.__query("/sections/%s/?links=false" %(section_id))
+        return self.__query("/sections/%s/" %(section_id))
 
     def sections_get_subnets(self, section_id):
         """Get the subnets for a specific section
@@ -148,7 +148,7 @@ class phpIPAM(object):
          Parameters:
              section_id = section identifier. Can be the id number or name.
          """
-        return self.__query("/sections/%s/subnets/?links=false" % (section_id))
+        return self.__query("/sections/%s/subnets/" % (section_id))
 
     def sections_create(self, section_id, masterSection=0):
         """Create a section
@@ -176,7 +176,7 @@ class phpIPAM(object):
         Parameters:
         subnet_id: The subnet identifier
         """
-        return self.__query("/subnets/%s/?links=false" % (subnet_id))
+        return self.__query("/subnets/%s/" % (subnet_id))
 
     def subnet_get_usage(self, subnet_id):
         """Get subnet usage
@@ -184,7 +184,7 @@ class phpIPAM(object):
         Parameters:
         subnet_id: The subnet identifier
         """
-        return self.__query("/subnets/%s/usage/?links=false" % (subnet_id))
+        return self.__query("/subnets/%s/usage/" % (subnet_id))
 
     def subnet_get_first_free(self, subnet_id):
         """Get first free IP address in subnet
@@ -192,7 +192,7 @@ class phpIPAM(object):
         Parameters:
         subnet_id: The subnet identifier
         """
-        return self.__query("/subnets/%s/first_free/?links=false" % (subnet_id))
+        return self.__query("/subnets/%s/first_free/" % (subnet_id))
 
     def subnet_get_slaves(self, subnet_id):
         """Get all immediate slave subnets
@@ -200,7 +200,7 @@ class phpIPAM(object):
         Parameters:
         subnet_id: The subnet identifier
         """
-        return self.__query("/subnets/%s/slaves/?links=false" % (subnet_id))
+        return self.__query("/subnets/%s/slaves/" % (subnet_id))
 
     def subnet_all(self, subnet_id):
         """Get all addresses in a subnet
@@ -208,7 +208,7 @@ class phpIPAM(object):
         Parameters:
         subnet_id: The subnet id
         """
-        return self.__query("/subnets/%s/addresses/?links=false" % (subnet_id))
+        return self.__query("/subnets/%s/addresses/" % (subnet_id))
 
     def subnet_get_ip(self, subnet_id, ip_addr):
         """Get IP address from subnet
@@ -217,7 +217,7 @@ class phpIPAM(object):
         subnet_id: The subnet identifier
         ip_addr: IP address in dotted decimal format
         """
-        return self.__query("/subnets/%s/addresses/%s/?links=false" % (subnet_id, ip_addr))
+        return self.__query("/subnets/%s/addresses/%s/" % (subnet_id, ip_addr))
 
     def subnet_get_available_subnet(self, subnet_id, netmask):
         """Get first available subnet with specified netmask
@@ -226,7 +226,7 @@ class phpIPAM(object):
         subnet_id: The subnet identifier of the parent subnet
         netmask: desired subnet size
         """
-        return self.__query("/subnets/%s/first_subnet/%s/?links=false" % (subnet_id, netmask))
+        return self.__query("/subnets/%s/first_subnet/%s/" % (subnet_id, netmask))
 
     def subnet_get_available_subnet_all(self, subnet_id, netmask):
         """Get all available subnets with specified netmask
@@ -235,12 +235,12 @@ class phpIPAM(object):
         subnet_id: The subnet identifier of the parent subnet
         netmask: desired subnet size
         """
-        return self.__query("/subnets/%s/all_subnets/%s/?links=false" % (subnet_id, netmask))
+        return self.__query("/subnets/%s/all_subnets/%s/" % (subnet_id, netmask))
 
     def subnet_get_custom_fields(self):
         """Get all subnet custom fields
         """
-        return self.__query("/subnets/custom_fields/?links=false")
+        return self.__query("/subnets/custom_fields/")
 
     def subnet_search(self, subnet_id):
         """Search by cidr
@@ -248,7 +248,7 @@ class phpIPAM(object):
         Parameters:
         subnet_id: The subnet cidr
         """
-        return self.__query("/subnets/cidr/%s/?links=false" % (subnet_id))
+        return self.__query("/subnets/cidr/%s/" % (subnet_id))
 
     def subnet_create(self, subnet, mask, sectionId, description="", vlanid=None, mastersubnetid=0, nameserverid=None):
         """Create new subnet
@@ -304,7 +304,7 @@ class phpIPAM(object):
         Parameters:
         address_id: The address identifier
         """
-        return self.__query("/addresses/%s/?links=false" % (address_id))
+        return self.__query("/addresses/%s/" % (address_id))
 
     def address_get_ping(self, address_id):
         """Get ping status of specific address
@@ -312,7 +312,7 @@ class phpIPAM(object):
         Parameters:
         address_id: The address identifier
         """
-        return self.__query("/addresses/%s/ping/?links=false" % (address_id))
+        return self.__query("/addresses/%s/ping/" % (address_id))
 
     def address_search(self, address):
         """Search for a specific address
@@ -320,7 +320,7 @@ class phpIPAM(object):
         Parameters:
         address: The address identifier either the ID or address
         """
-        return self.__query("/addresses/search/%s/?links=false" % (address))
+        return self.__query("/addresses/search/%s/" % (address))
 
     def address_search_hostname(self, hostname):
         """Search for all IPs with specified hostname
@@ -328,7 +328,7 @@ class phpIPAM(object):
         Parameters:
         hostname: the hostname to search for
         """
-        return self.__query("/addresses/search_hostname/%s/?links=false" % (hostname))
+        return self.__query("/addresses/search_hostname/%s/" % (hostname))
 
     def address_first_free(self, subnet_id):
         """Get first free IP address in subnet
@@ -336,17 +336,17 @@ class phpIPAM(object):
         Parameters:
         subnet_id: The subnet identifier
         """
-        return self.__query("/addresses/first_free/%s/?links=false" % (subnet_id))
+        return self.__query("/addresses/first_free/%s/" % (subnet_id))
     
     def address_get_custom_fields(self):
         """Get all address custom fields
         """
-        return self.__query("/addresses/custom_fields/?links=false")
+        return self.__query("/addresses/custom_fields/")
 
     def address_get_tag_all(self):
         """Get all address tags
         """
-        return self.__query("/addresses/tags/?links=false")
+        return self.__query("/addresses/tags/")
 
     def address_get_tag(self, tag_id):
         """Get specific address tag
@@ -354,7 +354,7 @@ class phpIPAM(object):
         Parameters:
         tag_id: the tag identifier
         """
-        return self.__query("/addresses/tags/%s/?links=false" % (tag_id))
+        return self.__query("/addresses/tags/%s/" % (tag_id))
 
     def address_get_tag_addresses(self, tag_id):
         """Get addresses for specific tag
@@ -362,7 +362,7 @@ class phpIPAM(object):
         Parameters:
         tag_id: the tag identifier
         """
-        return self.__query("/addresses/tags/%s/addresses/?links=false" % (tag_id))
+        return self.__query("/addresses/tags/%s/addresses/" % (tag_id))
 
     def address_update(self, ip, hostname=None, description=None, is_gateway=None, mac=None):
         """Update address informations"""
@@ -413,7 +413,7 @@ class phpIPAM(object):
     def vlan_get_all(self):
         """Get all vlans
         """
-        return self.__query("/vlans/?links=false")
+        return self.__query("/vlans/")
 
     def vlan_get(self, vlan_id):
         """Get Information about a specific vlan
@@ -421,7 +421,7 @@ class phpIPAM(object):
         Parameters:
         vlan_id: The vlan identifier either the ID or cidr
         """
-        return self.__query("/vlans/%s/?links=false" % (vlan_id))
+        return self.__query("/vlans/%s/" % (vlan_id))
 
     '''
     def vlan_get_id(self, vlan_id):
@@ -431,7 +431,7 @@ class phpIPAM(object):
         Parameters:
         vlan: The vlan to search for
         """
-        return self.__query("/vlans/search/%s/?links=false" % (vlan_id))[0]['id']
+        return self.__query("/vlans/search/%s/" % (vlan_id))[0]['id']
     '''
 
     def vlan_search(self, vlan_id):
@@ -441,7 +441,7 @@ class phpIPAM(object):
         Parameters:
         vlan: The vlan to search for
         """
-        return self.__query("/vlans/search/%s/?links=false" % (vlan_id))
+        return self.__query("/vlans/search/%s/" % (vlan_id))
 
     def vlan_subnets(self, vlan_id):
         """Get vlan subnets
@@ -449,12 +449,12 @@ class phpIPAM(object):
         Parameters:
         vlan_id: The vlan identifier
         """
-        return self.__query("/vlans/%s/subnets/?links=false" % (vlan_id))
+        return self.__query("/vlans/%s/subnets/" % (vlan_id))
 
     def vlan_custom_fields(self):
         """Get all vlan custom fields
         """
-        return self.__query("/vlans/custom_fields/?links=false")
+        return self.__query("/vlans/custom_fields/")
 
     def vlan_subnets_section(self, vlan_id, section_id):
         """Get vlan subnets in specific section
@@ -463,7 +463,7 @@ class phpIPAM(object):
         vlan_id: The vlan identifier
         section_id: The section identifier
         """
-        return self.__query("/vlans/%s/subnets/%s/?links=false" % (vlan_id, section_id))
+        return self.__query("/vlans/%s/subnets/%s/" % (vlan_id, section_id))
 
     def vlan_create(self, number, name, description=""):
         """Create new vlan
@@ -501,7 +501,7 @@ class phpIPAM(object):
         Parameters:
         l2domain_id: the l2domain identifier
         """
-        return self.__query("/l2domains/%s/?links=false" % (l2domain_id))
+        return self.__query("/l2domains/%s/" % (l2domain_id))
 
     def l2domains_get_vlans(self, l2domain_id):
         """Get vlans for a specific l2domain
@@ -509,12 +509,12 @@ class phpIPAM(object):
         Parameters:
         l2domain_id: the l2domain identifier
         """
-        return self.__query("/l2domains/%s/vlans/?links=false" % (l2domain_id))
+        return self.__query("/l2domains/%s/vlans/" % (l2domain_id))
 
     def l2domains_get_custom_fields(self):
         """Get all l2domain custom fields
         """
-        return self.__query("/l2domains/custom_fields/?links=false")
+        return self.__query("/l2domains/custom_fields/")
 
     def l2domains_create(self, name, description=None):
         """Create an l2domain
@@ -527,7 +527,7 @@ class phpIPAM(object):
             "name":name,
             "description":description
         }
-        return self.__query("/l2domains/?links=false", data=data)
+        return self.__query("/l2domains/", data=data)
 
     def l2domains_delete(self, l2domain_id):
         """Delete an l2domain
@@ -558,12 +558,12 @@ class phpIPAM(object):
         Parameters:
         vrf_id: the vrf identifier
         """
-        return self.__query("/vrf/%s/subnets/?links=false" % (vrf_id))
+        return self.__query("/vrf/%s/subnets/" % (vrf_id))
 
     def vrf_get_custom_fields(self):
         """Get all vrf custom fields
         """
-        return self.__query("/vrf/custom_fields/?links=false")
+        return self.__query("/vrf/custom_fields/")
 
     def vrf_create(self, name, description=None,rd=None,sections=None):
         """Create a vrf
@@ -595,7 +595,7 @@ class phpIPAM(object):
     def devices_get_all(self):
         """Get a list of all devices
         """
-        return self.__query("/devices/?links=false")
+        return self.__query("/devices/")
 
     def devices_get(self, device_id):
         """Get Information about a specific device
@@ -603,7 +603,7 @@ class phpIPAM(object):
         Parameters:
         device_id: The device identifier
         """
-        return self.__query("/devices/%s/?links=false" % (device_id))
+        return self.__query("/devices/%s/" % (device_id))
 
     def devices_get_subnets(self, device_id):
         """Get all subnets within device
@@ -611,7 +611,7 @@ class phpIPAM(object):
         Parameters:
         device_id: The device identifier
         """
-        return self.__query("/devices/%s/subnets/?links=false" % (device_id))
+        return self.__query("/devices/%s/subnets/" % (device_id))
 
     def devices_get_addresses(self, device_id):
         """Get all addresses within device
@@ -619,7 +619,7 @@ class phpIPAM(object):
         Parameters:
         device_id: The device identifier
         """
-        return self.__query("/devices/%s/addresses/?links=false" % (device_id))
+        return self.__query("/devices/%s/addresses/" % (device_id))
 
     def devices_search(self, search_string):
         """Get all devices with provided string anywhere in any field
@@ -627,7 +627,7 @@ class phpIPAM(object):
         Parameters:
         search_string: The string to search for
         """
-        return self.__query("/devices/search/%s/?links=false" % (search_string))
+        return self.__query("/devices/search/%s/" % (search_string))
 
     def devices_create(self, hostname, sections=None, location=None, ip_addr=None, rack=None,
             rack_start=None, rack_size=None):
@@ -653,7 +653,7 @@ class phpIPAM(object):
             "rack_start":rack_start,
             "rack_size":rack_size
         }
-        return self.__query("/devices/?links=false", data=data)
+        return self.__query("/devices/", data=data)
 
     def devices_delete(self, device_id):
         """Delete a device
