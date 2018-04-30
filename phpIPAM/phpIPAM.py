@@ -662,3 +662,86 @@ class phpIPAM(object):
         device_id: the id of the device
         """
         return self.__query("/devices/%s/" % (device_id), method=requests.delete)
+    
+    # Prefixes
+
+    def prefix_get_subnet_all(self, customer_type):
+        """Get all subnets available as part of 'customer_type'
+
+        Parameters:
+        cutomer_type
+        """
+        return self.__query("/prefix/%s/" % (customer_type))
+
+    def prefix_get_subnet_version(self, customer_type, version):
+        """Get all subnets available as part of 'customer_type', specific to either IPv4 or IPv6
+
+        Parameters:
+        cutomer_type
+        version: 4 or 6
+        """
+        return self.__query("/prefix/%s/%s/" % (customer_type, version))
+
+    def prefix_get_address_all(self, customer_type):
+        """Get all addresses available as part of 'customer_type'
+
+        Parameters:
+        cutomer_type
+        """
+        return self.__query("/prefix/%s/address/" % (customer_type))
+
+    def prefix_get_address_version(self, customer_type, version):
+        """Get all address available as part of 'customer_type', specific to either IPv4 or IPv6
+
+        Parameters:
+        cutomer_type
+        version: 4 or 6
+        """
+        return self.__query("/prefix/%s/address/%s/" % (customer_type, version))
+
+
+    def prefix_get_avail_subnet(self, customer_type, version, mask):
+        """Get first available subnet of version 'version' and mask 'mask'
+
+        Parameters:
+        cutomer_type
+        version: 4 or 6
+        mask: the subnet prefix length
+        """
+        return self.__query("/prefix/%s/%s/%s/" % (customer_type, version, mask))
+    
+    def prefix_get_avail_address(self, customer_type, version):
+        """Get first available address of version 'version' 
+
+        Parameters:
+        cutomer_type
+        version: 4 or 6
+        """
+        return self.__query("/prefix/%s/%s/address/" % (customer_type, version))
+
+
+    def prefix_create_subnet(self, customer_type, version, mask, description=None):
+        """Create first available subnet of version 'version' and mask 'mask'
+
+        Parameters:
+        cutomer_type
+        version: 4 or 6
+        mask: the subnet prefix length
+        description: the description of the subnet
+        """
+        data={
+            'description' : description
+        }
+        return self.__query("/prefix/%s/%s/%s/" % (customer_type, version, mask), data=data)
+    
+    def prefix_create_address(self, customer_type, version, description=None):
+        """Create first available address of version 'version' 
+
+        Parameters:
+        cutomer_type
+        version: 4 or 6
+        """
+        data={
+            'description' : description
+        }
+        return self.__query("/prefix/%s/%s/address/" % (customer_type, version), data=data)
