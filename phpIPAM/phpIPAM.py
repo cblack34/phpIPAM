@@ -205,7 +205,7 @@ class phpIPAM:
         """
         return self.__query("/subnets/{}/first_free/?links=false".format(subnet_id))
 
-    def subnet_create(self, subnet, mask, section_id, description="", vlanid=None, mastersubnetid=0, nameserverid=None):
+    def subnet_create(self, subnet, mask, section_id, description="", vlan_id=None, mastersubnet_id=0, nameserver_id=None):
         """Create new subnet
 
         Parameters:
@@ -214,16 +214,16 @@ class phpIPAM:
         section_id
         description: description
         vlanid:
-        mastersubnetid:
+        mastersubnet_id:
         nameserverid:"""
         data = {
             'subnet': subnet,
             'mask': mask,
             "sectionId": section_id,
             'description': description,
-            'vlanId': vlanid,
-            'masterSubnetId': mastersubnetid,
-            'nameserverId': nameserverid
+            'vlanId': vlan_id,
+            'masterSubnetId': mastersubnet_id,
+            'nameserverId': nameserver_id
         }
         return self.__query("/subnets/", data=data)
 
@@ -282,6 +282,20 @@ class phpIPAM:
             "mac": mac,
         }
         return self.__query("/addresses/", data=data)
+    
+    def address_create_first_free(self, subnet_id, hostname, description="", is_gateway=0, mac=""):
+        """Create new address
+
+        Parameters:
+        number: address number
+        name: short name
+        description: description"""
+        data = {
+            "subnetId":subnet_id,
+            "hostname":hostname,
+            "description":description
+        }
+        return self.__query("/addresses/first_free/", data=data)
 
     # VLAN
     def vlan_get(self, vlan_id):
