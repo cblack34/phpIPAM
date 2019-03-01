@@ -232,7 +232,7 @@ class phpIPAM:
         subnet_id: The subnet identifier of the parent subnet
         netmask: desired subnet size
         """
-        return self.__query("/subnets/{}/first_free/".format(subnet_id))
+        return self.__query("/subnets/{}/first_subnet/{}".format(subnet_id, netmask))
     
     def subnet_get_available_subnet_all(self, subnet_id, netmask):
         """Get all available subnets with specified netmask
